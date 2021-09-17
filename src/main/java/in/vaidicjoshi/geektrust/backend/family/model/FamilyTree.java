@@ -85,7 +85,7 @@ public class FamilyTree {
     }
     FamilyNode childNode = addMember(nameOfChild, genderOfChild);
     childNode.setParent(parentNode);
-    parentNode.getChildren().add(childNode);
+    parentNode.getChildren().add(nameOfChild);
   }
 
   /**
