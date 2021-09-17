@@ -1,0 +1,59 @@
+# A line starting with '#' is treated as comments, blank lines are ignored
+# Names of family member are expected to be unique & are case sensitive
+# The file has entry for family members of "KingShan" & "QueenAnga" and the king & the queen are already added
+# Following are the entries for the family tree as shown in https://www.geektrust.in/api/pdf/open/PS1
+
+# Add Children to "KingShan" & "QueenAnga"
+ADD_CHILD QueenAnga Chit MALE
+ADD_CHILD QueenAnga Ish MALE
+ADD_CHILD QueenAnga Vich MALE
+ADD_CHILD QueenAnga Aras MALE
+ADD_CHILD QueenAnga Satya FEMALE
+
+# Add Spouses to children of "KingShan" & "QueenAnga"
+ADD_SPOUSE Chit Amba
+ADD_SPOUSE Vich Lika
+ADD_SPOUSE Aras Chitra
+ADD_SPOUSE Satya Vyan
+
+# Add Children to Chit & Amba
+ADD_CHILD Amba Dritha FEMALE
+ADD_CHILD Amba Tritha FEMALE
+ADD_CHILD Amba Vritha MALE
+
+# Add Spouses to children of Chit & Amba
+ADD_SPOUSE Dritha Jaya
+
+# Add Children to Dritha & Jaya
+ADD_CHILD Dritha Yodhan MALE
+
+# Add Children to Vich & Lika
+ADD_CHILD Lika Vila FEMALE
+ADD_CHILD Lika Chika FEMALE
+
+# Add Children to Aras & Chitra
+ADD_CHILD Chitra Jnki FEMALE
+ADD_CHILD Chitra Ahit MALE
+
+# Add Spouse to children to Aras & Chitra
+ADD_SPOUSE Jnki Arit
+
+# Add Children to Jnki & Arit
+ADD_CHILD Jnki Laki MALE
+ADD_CHILD Jnki Lavnya FEMALE
+
+# Add Children to Satya & Vyan
+ADD_CHILD Satya Asva MALE
+ADD_CHILD Satya Vyas MALE
+ADD_CHILD Satya Atya FEMALE
+
+# Add Spouse to children to Satya & Vyan
+ADD_SPOUSE Asva Satvy
+ADD_SPOUSE Vyas Krpi
+
+# Add Children to Asva & Satvy
+ADD_CHILD Satvy Vasa MALE
+
+# Add Children to Vyas & Krpi
+ADD_CHILD Krpi Kriya MALE
+ADD_CHILD Krpi Krithi FEMALE
