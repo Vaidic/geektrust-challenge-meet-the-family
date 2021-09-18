@@ -29,6 +29,7 @@ We need to create a pre-populated family tree, that supports -
 1. Only two Genders (Male & Female) are supported.
 2. A couple has a male & a female member.
 3. Names are case-sensitive.
+4. Family Tree is build left-to right in DFS order.
 
 ## Running the project
 

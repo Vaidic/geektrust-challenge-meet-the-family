@@ -63,6 +63,25 @@ GET_RELATIONSHIP Aria Siblings
 
 ########### Test Samples From Problem #############
 
+########### Test Relationships #############
+GET_RELATIONSHIP Jnki Son
+GET_RELATIONSHIP Jnki Daughter
+GET_RELATIONSHIP Jnki Siblings
+
+GET_RELATIONSHIP Vyas Maternal-Uncle
+GET_RELATIONSHIP Vyas Maternal-Aunt
+GET_RELATIONSHIP Yodhan Maternal-Aunt
+GET_RELATIONSHIP Kriya Paternal-Uncle
+GET_RELATIONSHIP Kriya Paternal-Aunt
+
+GET_RELATIONSHIP Kriya Brother-In-Law
+GET_RELATIONSHIP Krpi Brother-In-Law
+GET_RELATIONSHIP Jaya Brother-In-Law
+GET_RELATIONSHIP Chit Sister-In-Law
+GET_RELATIONSHIP Satya Sister-In-Law
+GET_RELATIONSHIP Satvy Sister-In-Law
+
+########### Test Relationships #############
 
 
 

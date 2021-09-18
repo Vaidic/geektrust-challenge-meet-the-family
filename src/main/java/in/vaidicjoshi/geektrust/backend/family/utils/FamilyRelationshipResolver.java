@@ -53,7 +53,7 @@ public class FamilyRelationshipResolver {
       return Collections.singletonList(PERSON_NOT_FOUND);
     }
     return member.getChildren().stream()
-        .filter(child -> child.getGender().equals(Gender.MALE))
+        .filter(child -> child.getGender().equals(Gender.FEMALE))
         .map(FamilyMember::getName)
         .collect(Collectors.toList());
   }
@@ -238,7 +238,9 @@ public class FamilyRelationshipResolver {
    * @return
    */
   private static String getWife(FamilyNode member, String memberName) {
-    return member.isMale(memberName) ? member.getFemaleMember().getName() : null;
+    return member.isMale(memberName)
+        ? Optional.ofNullable(member.getFemaleMember()).map(FamilyMember::getName).orElse(null)
+        : null;
   }
 
   /**
@@ -249,7 +251,9 @@ public class FamilyRelationshipResolver {
    * @return
    */
   private static String getHusband(FamilyNode member, String memberName) {
-    return member.isFemale(memberName) ? member.getMaleMember().getName() : null;
+    return member.isFemale(memberName)
+        ? Optional.ofNullable(member.getMaleMember()).map(FamilyMember::getName).orElse(null)
+        : null;
   }
 
   /**
@@ -264,6 +268,7 @@ public class FamilyRelationshipResolver {
       return member.getParent().getChildren().stream()
           .filter(child -> child.getGender().equals(Gender.MALE))
           .map(FamilyMember::getName)
+          .filter(name -> !name.equals(memberName))
           .collect(Collectors.toList());
     }
     return new ArrayList<>();
@@ -281,6 +286,7 @@ public class FamilyRelationshipResolver {
       return member.getParent().getChildren().stream()
           .filter(child -> child.getGender().equals(Gender.FEMALE))
           .map(FamilyMember::getName)
+          .filter(name -> !name.equals(memberName))
           .collect(Collectors.toList());
     }
     return new ArrayList<>();
