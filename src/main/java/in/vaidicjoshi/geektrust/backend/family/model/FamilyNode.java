@@ -19,7 +19,7 @@ public class FamilyNode {
   private FamilyNode parent;
   private FamilyMember maleMember;
   private FamilyMember femaleMember;
-  private Set<String> children = new LinkedHashSet<>();
+  private Set<FamilyMember> children = new LinkedHashSet<>();
 
   public boolean isMale(String name) {
     return Objects.nonNull(this.maleMember) && this.maleMember.getName().equals(name);

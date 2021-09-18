@@ -14,11 +14,7 @@ import java.util.Optional;
  */
 public class FamilyTree {
   // Cache stores member name to Family Node mappings
-  private final Map<String, FamilyNode> familyMembers;
-
-  public FamilyTree() {
-    this.familyMembers = new HashMap<>();
-  }
+  private static final Map<String, FamilyNode> familyMembers = new HashMap<>();
 
   /**
    * This method returns the Family Node for the Family Member identified by his/her name.
@@ -26,7 +22,7 @@ public class FamilyTree {
    * @param name
    * @return FamilyNode
    */
-  public FamilyNode getMember(String name) throws MemberNotFoundException {
+  public static FamilyNode getMember(String name) throws MemberNotFoundException {
     return Optional.ofNullable(familyMembers.get(name))
         .orElseThrow(() -> new MemberNotFoundException("Member with name " + name + " not found."));
   }
@@ -85,7 +81,12 @@ public class FamilyTree {
     }
     FamilyNode childNode = addMember(nameOfChild, genderOfChild);
     childNode.setParent(parentNode);
-    parentNode.getChildren().add(nameOfChild);
+    parentNode
+        .getChildren()
+        .add(
+            genderOfChild.equals(Gender.MALE)
+                ? childNode.getMaleMember()
+                : childNode.getFemaleMember());
   }
 
   /**
