@@ -95,14 +95,8 @@ public class FamilyRelationshipResolver {
     } catch (MemberNotFoundException e) {
       return Collections.singletonList(PERSON_NOT_FOUND);
     }
-    if (hasParent(member.getParent(), member.getParent().getMaleMember().getName())) {
-      return member.getParent().getParent().getChildren().stream()
-          .filter(child -> child.getGender().equals(Gender.MALE))
-          .map(FamilyMember::getName)
-          .filter(name -> !memberName.equals(name))
-          .collect(Collectors.toList());
-    }
-    return new ArrayList<>();
+    String fathersName = member.getParent().getMaleMember().getName();
+    return getUncles(member, fathersName);
   }
 
   /**
@@ -119,11 +113,23 @@ public class FamilyRelationshipResolver {
     } catch (MemberNotFoundException e) {
       return Collections.singletonList(PERSON_NOT_FOUND);
     }
-    if (hasParent(member.getParent(), member.getParent().getMaleMember().getName())) {
+    String fathersName = member.getParent().getMaleMember().getName();
+    return getAunts(member, fathersName);
+  }
+
+  /**
+   * Returns sisters of either parent.
+   *
+   * @param member
+   * @param parentName
+   * @return
+   */
+  private static List<String> getAunts(FamilyNode member, String parentName) {
+    if (hasParent(member.getParent(), parentName)) {
       return member.getParent().getParent().getChildren().stream()
           .filter(child -> child.getGender().equals(Gender.FEMALE))
           .map(FamilyMember::getName)
-          .filter(name -> !memberName.equals(name))
+          .filter(name -> !name.equals(parentName))
           .collect(Collectors.toList());
     }
     return new ArrayList<>();
@@ -143,11 +149,23 @@ public class FamilyRelationshipResolver {
     } catch (MemberNotFoundException e) {
       return Collections.singletonList(PERSON_NOT_FOUND);
     }
-    if (hasParent(member.getParent(), member.getParent().getFemaleMember().getName())) {
+    String mothersName = member.getParent().getFemaleMember().getName();
+    return getUncles(member, mothersName);
+  }
+
+  /**
+   * Returns brothers of either parent.
+   *
+   * @param member
+   * @param parentName
+   * @return
+   */
+  private static List<String> getUncles(FamilyNode member, String parentName) {
+    if (hasParent(member.getParent(), parentName)) {
       return member.getParent().getParent().getChildren().stream()
           .filter(child -> child.getGender().equals(Gender.MALE))
           .map(FamilyMember::getName)
-          .filter(name -> !memberName.equals(name))
+          .filter(name -> !name.equals(parentName))
           .collect(Collectors.toList());
     }
     return new ArrayList<>();
@@ -167,14 +185,8 @@ public class FamilyRelationshipResolver {
     } catch (MemberNotFoundException e) {
       return Collections.singletonList(PERSON_NOT_FOUND);
     }
-    if (hasParent(member.getParent(), member.getParent().getFemaleMember().getName())) {
-      return member.getParent().getParent().getChildren().stream()
-          .filter(child -> child.getGender().equals(Gender.FEMALE))
-          .map(FamilyMember::getName)
-          .filter(name -> !memberName.equals(name))
-          .collect(Collectors.toList());
-    }
-    return new ArrayList<>();
+    String mothersName = member.getParent().getFemaleMember().getName();
+    return getAunts(member, mothersName);
   }
 
   /**
