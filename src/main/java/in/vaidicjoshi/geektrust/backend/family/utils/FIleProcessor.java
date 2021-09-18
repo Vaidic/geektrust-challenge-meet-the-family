@@ -81,13 +81,13 @@ public class FIleProcessor {
               try {
                 return processLineAsCommand(line, familyTree);
               } catch (MemberAdditionFailedException e) {
-                log.error(CHILD_ADDITION_FAILED);
+                log.debug(CHILD_ADDITION_FAILED);
                 return CHILD_ADDITION_FAILED;
               } catch (DataFormatException e) {
-                log.error(e.getMessage());
+                log.debug(e.getMessage());
                 throw new RuntimeException(e);
               } catch (MemberNotFoundException e) {
-                log.error(PERSON_NOT_FOUND);
+                log.debug(PERSON_NOT_FOUND);
                 return PERSON_NOT_FOUND;
               }
             })
@@ -139,7 +139,7 @@ public class FIleProcessor {
             relationship);
         return relationship;
       default:
-        log.error("Invalid Command {} was supplied", commandWithParams[0]);
+        log.debug("Invalid Command {} was supplied", commandWithParams[0]);
         throw new DataFormatException("Invalid Command " + commandWithParams[0] + " was supplied");
     }
   }
