@@ -49,7 +49,7 @@ class FamilyAppE2ETest {
     List<String> output = FIleProcessor.executeCommandsFromFile(inputFile, familyTree);
     try (Stream<String> lines = Files.lines(Paths.get(outputFile))) {
       String expectedResult = lines.filter(str -> !isBlank(str)).collect(Collectors.joining(";"));
-//      assertEquals(expectedResult, String.join(";", output));
+      assertEquals(expectedResult, String.join(";", output));
     }
   }
 }
