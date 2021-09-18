@@ -191,9 +191,9 @@ public class FamilyRelationshipResolver {
         member.isMale(memberName) ? member.getFemaleMember() : member.getMaleMember();
 
     List<String> sistersInLaw = new LinkedList<>();
-    List<String> sisters = getSisters(member, spouse.getName());
+    List<String> sistersOfSpouse = getSisters(member, spouse.getName());
     List<String> brothers = getBrothers(member, memberName);
-    List<String> wifeOfSpouse =
+    List<String> wivesOfBrothers =
         brothers.stream()
             .map(
                 name -> {
@@ -207,8 +207,8 @@ public class FamilyRelationshipResolver {
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
 
-    sistersInLaw.addAll(sisters);
-    sistersInLaw.addAll(wifeOfSpouse);
+    sistersInLaw.addAll(sistersOfSpouse);
+    sistersInLaw.addAll(wivesOfBrothers);
     return sistersInLaw;
   }
 
@@ -221,6 +221,17 @@ public class FamilyRelationshipResolver {
    */
   private static String getWife(FamilyNode member, String memberName) {
     return member.isMale(memberName) ? member.getFemaleMember().getName() : null;
+  }
+
+  /**
+   * Returns Wife of a member.
+   *
+   * @param member
+   * @param memberName
+   * @return
+   */
+  private static String getHusband(FamilyNode member, String memberName) {
+    return member.isFemale(memberName) ? member.getMaleMember().getName() : null;
   }
 
   /**
@@ -265,7 +276,35 @@ public class FamilyRelationshipResolver {
    * @return
    */
   public static List<String> getBrotherInLaw(FamilyTree familyTree, String memberName) {
-    return null;
+    FamilyNode member = null;
+    try {
+      member = familyTree.getMember(memberName);
+    } catch (MemberNotFoundException e) {
+      return Collections.singletonList(PERSON_NOT_FOUND);
+    }
+    FamilyMember spouse =
+        member.isMale(memberName) ? member.getFemaleMember() : member.getMaleMember();
+
+    List<String> brothersInLaw = new LinkedList<>();
+    List<String> brothersOfSpouse = getBrothers(member, spouse.getName());
+    List<String> sisters = getSisters(member, memberName);
+    List<String> husbandsOfSisters =
+        sisters.stream()
+            .map(
+                name -> {
+                  try {
+                    FamilyNode node = familyTree.getMember(name);
+                    return getHusband(node, name);
+                  } catch (MemberNotFoundException e) {
+                    return null;
+                  }
+                })
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+
+    brothersInLaw.addAll(brothersOfSpouse);
+    brothersInLaw.addAll(husbandsOfSisters);
+    return brothersInLaw;
   }
 
   /**
