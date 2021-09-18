@@ -27,7 +27,8 @@ public class FamilyTreeUtils {
 
   public static void loadFamilyFromFile(FamilyTree familyTree) throws IOException {
 
-    InputStream inputStream = Objects.requireNonNull(
+    InputStream inputStream =
+        Objects.requireNonNull(
             FamilyTreeUtils.class.getClassLoader().getResourceAsStream("initializeFamily.txt"));
     FIleProcessor.executeCommandsFromFile(inputStream, familyTree);
   }

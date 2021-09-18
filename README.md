@@ -10,15 +10,12 @@
 [![last-commit](https://badgen.net/github/last-commit/vaidic/geektrust-challenge-meet-the-family/main)](https://github.com/Vaidic/geektrust-challenge-meet-the-family/commits/main)
 [![releases](https://badgen.net/github/release/Vaidic/geektrust-challenge-meet-the-family)](https://github.com/Vaidic/geektrust-challenge-meet-the-family/releases)
 
-
-
-
 ## Problem Statement
 
 We need to create a pre-populated family tree, that supports -
+
 1. Adding new Members to tree through `Mothers`
 2. Determining all the people who hold a given relation with a member in the Family Tree.
-
 
 ## Assumptions
 
@@ -44,11 +41,14 @@ java -jar geektrust.jar <path-to-inputfile>
 **OR**
 
 1. Download the source code.
-2. Build the project using - 
+2. Build the project using -
+
 ```shell
 ./gradlew clean build
 ```
+
 3. Use the generated `jar` from `build/lib` folder and execute -
+
 ```shell
 java -jar geektrust.jar <path-to-inputfile>
 ```

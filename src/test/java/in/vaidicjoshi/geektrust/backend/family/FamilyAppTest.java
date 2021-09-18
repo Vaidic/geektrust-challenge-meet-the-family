@@ -5,7 +5,6 @@ import in.vaidicjoshi.geektrust.backend.family.exceptions.MemberNotFoundExceptio
 import in.vaidicjoshi.geektrust.backend.family.model.FamilyTree;
 import in.vaidicjoshi.geektrust.backend.family.utils.FIleProcessor;
 import in.vaidicjoshi.geektrust.backend.family.utils.FamilyTreeUtils;
-import jdk.internal.joptsimple.internal.Strings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +49,7 @@ class FamilyAppE2ETest {
     List<String> output = FIleProcessor.executeCommandsFromFile(inputFile, familyTree);
     try (Stream<String> lines = Files.lines(Paths.get(outputFile))) {
       String expectedResult = lines.filter(str -> !isBlank(str)).collect(Collectors.joining(";"));
-      assertEquals(expectedResult, Strings.join(output, ";"));
+      assertEquals(expectedResult, String.join(";", output));
     }
   }
 }
