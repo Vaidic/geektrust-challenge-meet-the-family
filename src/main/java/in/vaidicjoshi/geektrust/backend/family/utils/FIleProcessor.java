@@ -115,6 +115,7 @@ public class FIleProcessor {
             RelationshipService.getRelationship(
                 familyTree, commandWithParams[1], SupportedRelationship.get(commandWithParams[2]));
         System.out.println(relationship);
+        break;
       default:
         throw new DataFormatException("Invalid Command " + commandWithParams[0] + " was supplied");
     }
