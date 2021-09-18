@@ -7,6 +7,7 @@ import in.vaidicjoshi.geektrust.backend.family.exceptions.MemberAdditionFailedEx
 import in.vaidicjoshi.geektrust.backend.family.exceptions.MemberNotFoundException;
 import in.vaidicjoshi.geektrust.backend.family.model.FamilyTree;
 import in.vaidicjoshi.geektrust.backend.family.service.RelationshipService;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +16,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.DataFormatException;
 
@@ -22,6 +26,7 @@ import java.util.zip.DataFormatException;
  * @author Vaidic Joshi
  * @date 18/09/21
  */
+@Log4j2
 public class FIleProcessor {
 
   private static final String CHILD_ADDITION_SUCCEEDED = "CHILD_ADDITION_SUCCEEDED";
@@ -33,11 +38,13 @@ public class FIleProcessor {
    *
    * @param inputStream
    * @param familyTree
+   * @return
    */
-  public static void executeCommandsFromFile(InputStream inputStream, FamilyTree familyTree) {
+  public static List<String> executeCommandsFromFile(
+      InputStream inputStream, FamilyTree familyTree) {
     try (Stream<String> lines =
         new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).lines(); ) {
-      processFile(familyTree, lines);
+      return processFile(familyTree, lines);
     }
   }
 
@@ -47,11 +54,12 @@ public class FIleProcessor {
    * @param file
    * @param familyTree
    * @throws IOException
+   * @return
    */
-  public static void executeCommandsFromFile(String file, FamilyTree familyTree)
+  public static List<String> executeCommandsFromFile(String file, FamilyTree familyTree)
       throws IOException {
     try (Stream<String> lines = Files.lines(Paths.get(file))) {
-      processFile(familyTree, lines);
+      return processFile(familyTree, lines);
 
     } catch (IOException e) {
       throw new IOException("The filepath " + file + " is not reachable");
@@ -63,22 +71,28 @@ public class FIleProcessor {
    *
    * @param familyTree
    * @param lines
+   * @return
    */
-  private static void processFile(FamilyTree familyTree, Stream<String> lines) {
-    lines
+  private static List<String> processFile(FamilyTree familyTree, Stream<String> lines) {
+    return lines
         .filter((line) -> !isLineEmptyOrComment(line))
-        .forEach(
+        .map(
             (line) -> {
               try {
-                processLineAsCommand(line, familyTree);
+                return processLineAsCommand(line, familyTree);
               } catch (MemberAdditionFailedException e) {
-                System.out.println(CHILD_ADDITION_FAILED);
+                log.error(CHILD_ADDITION_FAILED);
+                return CHILD_ADDITION_FAILED;
               } catch (DataFormatException e) {
+                log.error(e.getMessage());
                 throw new RuntimeException(e);
               } catch (MemberNotFoundException e) {
-                System.out.println(PERSON_NOT_FOUND);
+                log.error(PERSON_NOT_FOUND);
+                return PERSON_NOT_FOUND;
               }
-            });
+            })
+        .filter(res -> !isBlank(res))
+        .collect(Collectors.toList());
   }
 
   /**
@@ -91,7 +105,7 @@ public class FIleProcessor {
    * @throws MemberNotFoundException
    * @throws IllegalStateException
    */
-  public static void processLineAsCommand(String line, FamilyTree familyTree)
+  public static String processLineAsCommand(String line, FamilyTree familyTree)
       throws DataFormatException, MemberAdditionFailedException, MemberNotFoundException,
           IllegalStateException {
     String[] commandWithParams = line.split(" ");
@@ -99,24 +113,31 @@ public class FIleProcessor {
       case ADD_SPOUSE:
         validateParamsCardinality(commandWithParams, 2);
         familyTree.addSpouse(commandWithParams[1], commandWithParams[2]);
-        System.out.printf(
-            "Spouse %s to %s was added successfully.\n",
-            commandWithParams[2], commandWithParams[1]);
-        break;
+        log.debug(
+            "Spouse {} to {} was added successfully.\n",
+            commandWithParams[2],
+            commandWithParams[1]);
+        return "";
       case ADD_CHILD:
         validateParamsCardinality(commandWithParams, 3);
         familyTree.addChild(
             commandWithParams[1], commandWithParams[2], Gender.valueOf(commandWithParams[3]));
-        System.out.println(CHILD_ADDITION_SUCCEEDED);
-        break;
+        log.debug(
+            "Child {} to {} was added successfully.\n", commandWithParams[1], commandWithParams[2]);
+        return CHILD_ADDITION_SUCCEEDED;
       case GET_RELATIONSHIP:
         validateParamsCardinality(commandWithParams, 2);
         String relationship =
             RelationshipService.getRelationship(
                 familyTree, commandWithParams[1], SupportedRelationship.get(commandWithParams[2]));
-        System.out.println(relationship);
-        break;
+        log.debug(
+            "Relationship {} for {} are {}",
+            commandWithParams[2],
+            commandWithParams[1],
+            relationship);
+        return relationship;
       default:
+        log.error("Invalid Command {} was supplied", commandWithParams[0]);
         throw new DataFormatException("Invalid Command " + commandWithParams[0] + " was supplied");
     }
   }
@@ -147,5 +168,15 @@ public class FIleProcessor {
    */
   public static boolean isLineEmptyOrComment(String line) {
     return (line.trim().isEmpty() || line.startsWith("#"));
+  }
+
+  /**
+   * Returns true if a String is null or blank.
+   *
+   * @param str
+   * @return
+   */
+  private static boolean isBlank(String str) {
+    return Objects.isNull(str) || str.trim().isEmpty();
   }
 }
