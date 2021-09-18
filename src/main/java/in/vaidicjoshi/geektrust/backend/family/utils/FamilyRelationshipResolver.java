@@ -99,6 +99,7 @@ public class FamilyRelationshipResolver {
       return member.getParent().getParent().getChildren().stream()
           .filter(child -> child.getGender().equals(Gender.MALE))
           .map(FamilyMember::getName)
+          .filter(name -> !memberName.equals(name))
           .collect(Collectors.toList());
     }
     return new ArrayList<>();
@@ -122,6 +123,7 @@ public class FamilyRelationshipResolver {
       return member.getParent().getParent().getChildren().stream()
           .filter(child -> child.getGender().equals(Gender.FEMALE))
           .map(FamilyMember::getName)
+          .filter(name -> !memberName.equals(name))
           .collect(Collectors.toList());
     }
     return new ArrayList<>();
@@ -145,6 +147,7 @@ public class FamilyRelationshipResolver {
       return member.getParent().getParent().getChildren().stream()
           .filter(child -> child.getGender().equals(Gender.MALE))
           .map(FamilyMember::getName)
+          .filter(name -> !memberName.equals(name))
           .collect(Collectors.toList());
     }
     return new ArrayList<>();
@@ -168,6 +171,7 @@ public class FamilyRelationshipResolver {
       return member.getParent().getParent().getChildren().stream()
           .filter(child -> child.getGender().equals(Gender.FEMALE))
           .map(FamilyMember::getName)
+          .filter(name -> !memberName.equals(name))
           .collect(Collectors.toList());
     }
     return new ArrayList<>();
@@ -187,11 +191,9 @@ public class FamilyRelationshipResolver {
     } catch (MemberNotFoundException e) {
       return Collections.singletonList(PERSON_NOT_FOUND);
     }
-    FamilyMember spouse =
-        member.isMale(memberName) ? member.getFemaleMember() : member.getMaleMember();
 
     List<String> sistersInLaw = new LinkedList<>();
-    List<String> sistersOfSpouse = getSisters(member, spouse.getName());
+
     List<String> brothers = getBrothers(member, memberName);
     List<String> wivesOfBrothers =
         brothers.stream()
@@ -206,8 +208,12 @@ public class FamilyRelationshipResolver {
                 })
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
-
-    sistersInLaw.addAll(sistersOfSpouse);
+    FamilyMember spouse =
+        member.isMale(memberName) ? member.getFemaleMember() : member.getMaleMember();
+    if (Objects.nonNull(spouse)) {
+      List<String> sistersOfSpouse = getSisters(member, spouse.getName());
+      sistersInLaw.addAll(sistersOfSpouse);
+    }
     sistersInLaw.addAll(wivesOfBrothers);
     return sistersInLaw;
   }
@@ -282,11 +288,7 @@ public class FamilyRelationshipResolver {
     } catch (MemberNotFoundException e) {
       return Collections.singletonList(PERSON_NOT_FOUND);
     }
-    FamilyMember spouse =
-        member.isMale(memberName) ? member.getFemaleMember() : member.getMaleMember();
-
     List<String> brothersInLaw = new LinkedList<>();
-    List<String> brothersOfSpouse = getBrothers(member, spouse.getName());
     List<String> sisters = getSisters(member, memberName);
     List<String> husbandsOfSisters =
         sisters.stream()
@@ -302,7 +304,12 @@ public class FamilyRelationshipResolver {
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
 
-    brothersInLaw.addAll(brothersOfSpouse);
+    FamilyMember spouse =
+        member.isMale(memberName) ? member.getFemaleMember() : member.getMaleMember();
+    if (Objects.nonNull(spouse)) {
+      List<String> brothersOfSpouse = getBrothers(member, spouse.getName());
+      brothersInLaw.addAll(brothersOfSpouse);
+    }
     brothersInLaw.addAll(husbandsOfSisters);
     return brothersInLaw;
   }

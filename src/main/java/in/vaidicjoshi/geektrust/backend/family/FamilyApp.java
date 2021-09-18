@@ -6,6 +6,7 @@ import in.vaidicjoshi.geektrust.backend.family.utils.FamilyTreeUtils;
 
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Vaidic Joshi
@@ -20,7 +21,7 @@ public class FamilyApp {
       }
       FamilyTree familyTree = FamilyTreeUtils.initFamilyTree();
       List<String> commandOutputs = FIleProcessor.executeCommandsFromFile(args[0], familyTree);
-      commandOutputs.forEach(System.out::println);
+      commandOutputs.stream().filter(Objects::nonNull).forEach(System.out::println);
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }

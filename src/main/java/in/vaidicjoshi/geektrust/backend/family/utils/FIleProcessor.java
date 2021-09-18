@@ -121,7 +121,9 @@ public class FIleProcessor {
       case ADD_CHILD:
         validateParamsCardinality(commandWithParams, 3);
         familyTree.addChild(
-            commandWithParams[1], commandWithParams[2], Gender.valueOf(commandWithParams[3]));
+            commandWithParams[1],
+            commandWithParams[2],
+            Gender.valueOf(commandWithParams[3].toUpperCase()));
         log.debug(
             "Child {} to {} was added successfully.\n", commandWithParams[1], commandWithParams[2]);
         return CHILD_ADDITION_SUCCEEDED;
