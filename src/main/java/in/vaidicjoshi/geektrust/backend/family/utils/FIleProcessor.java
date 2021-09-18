@@ -178,7 +178,7 @@ public class FIleProcessor {
    * @param str
    * @return
    */
-  private static boolean isBlank(String str) {
+  public static boolean isBlank(String str) {
     return Objects.isNull(str) || str.trim().isEmpty();
   }
 }
