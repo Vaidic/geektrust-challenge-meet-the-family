@@ -1,3 +1,22 @@
+CHILD_ADDITION_SUCCEEDED
+CHILD_ADDITION_SUCCEEDED
+CHILD_ADDITION_FAILED
+CHILD_ADDITION_FAILED
+
+PERSON_NOT_FOUND
+SPOUSE_ADDITION_SUCCEEDED
+CHILD_ADDITION_FAILED
+CHILD_ADDITION_FAILED
+
+NONE
+PERSON_NOT_FOUND
+
+No enum constant in.vaidicjoshi.geektrust.backend.family.enums.SupportedCommand.ADD_CHILDREN
+Command ADD_CHILD requires 3 parameters, however 2 were supplied
+Command ADD_SPOUSE requires 2 parameters, however 3 were supplied
+Command GET_RELATIONSHIP requires 2 parameters, however 1 were supplied
+No enum constant in.vaidicjoshi.geektrust.backend.family.enums.Gender.NOTDISCLOSED
+
 PERSON_NOT_FOUND
 PERSON_NOT_FOUND
 
@@ -9,5 +28,6 @@ Satvy Krpi
 CHILD_ADDITION_SUCCEEDED
 Aria
 Jnki Ahit
+
 
 

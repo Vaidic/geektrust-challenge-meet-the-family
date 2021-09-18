@@ -27,7 +27,8 @@ We need to create a pre-populated family tree, that supports -
 ### Additional Assumptions Made
 
 1. Only two Genders (Male & Female) are supported.
-2. A couple has a male & a female member
+2. A couple has a male & a female member.
+3. Names are case-sensitive.
 
 ## Running the project
 

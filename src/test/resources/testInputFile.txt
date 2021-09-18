@@ -1,3 +1,54 @@
+# Test Cases
+########### BASE CASES ###############
+
+# Add child - success
+    ADD_CHILD Vila Tani Female
+    ADD_CHILD Vila Hani Male
+
+# Add child - failure
+    ## Not Added via mother
+    ADD_CHILD Ish Vani Female
+
+    ## Duplicate Member
+    ADD_CHILD Vila Tani Female
+
+    ## Member does not exist
+    ADD_CHILD ISH Kani Male
+
+# Add spouse - success
+    ADD_SPOUSE Ish Mani
+
+# Add spouse - failure
+    ## Duplicate Member
+    ADD_SPOUSE Ish Mani
+
+    ## Member does not exist
+    ADD_SPOUSE ISH Mani
+
+# Get Relationship - success
+    GET_RELATIONSHIP Ish Son
+
+# Get Relationship - failure
+    ## Member does not exist
+    GET_RELATIONSHIP ISH Son
+
+# Bad Commands - Failure
+    ## All parameters not supplied
+    ADD_CHILDREN Vila Tani
+    ADD_CHILD Vila Tani
+    ADD_SPOUSE Ish Mani Female
+    GET_RELATIONSHIP ISH
+
+    ## Invalid Gender
+    ADD_CHILD ISH Kani NotDisclosed
+
+    ## Invalid Relationship
+    GET_RELATIONSHIP ISH Parent
+
+########### BASE CASES ###############
+
+########### Test Samples From Problem #############
+
 ADD_CHILD Pajali Srutak Male
 GET_RELATIONSHIP Pajali Son
 
@@ -9,3 +60,13 @@ GET_RELATIONSHIP Atya Sister-In-Law
 ADD_CHILD Chitra Aria Female
 GET_RELATIONSHIP Lavnya Maternal-Aunt
 GET_RELATIONSHIP Aria Siblings
+
+########### Test Samples From Problem #############
+
+
+
+
+
+
+
+

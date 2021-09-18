@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 
 /**
@@ -44,6 +41,7 @@ public enum SupportedRelationship {
   }
 
   public static SupportedRelationship get(String name) {
-    return supportedRelationships.get(name);
+    return Optional.ofNullable(supportedRelationships.get(name))
+        .orElseThrow(IllegalArgumentException::new);
   }
 }

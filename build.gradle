@@ -17,7 +17,7 @@ jacocoTestReport { //Please do not change this
     reports {
         xml.enabled true
         csv.enabled false
-        html.enabled false
+        html.enabled true
         xml.destination file("./jacoco.xml")
     }
 }

@@ -32,6 +32,7 @@ public class FIleProcessor {
   private static final String CHILD_ADDITION_SUCCEEDED = "CHILD_ADDITION_SUCCEEDED";
   private static final String CHILD_ADDITION_FAILED = "CHILD_ADDITION_FAILED";
   private static final String PERSON_NOT_FOUND = "PERSON_NOT_FOUND";
+  private static final String SPOUSE_ADDITION_SUCCEEDED = "SPOUSE_ADDITION_SUCCEEDED";
 
   /**
    * Processes a file as input stream and executes all valid commands on it.
@@ -83,15 +84,16 @@ public class FIleProcessor {
               } catch (MemberAdditionFailedException e) {
                 log.debug(CHILD_ADDITION_FAILED);
                 return CHILD_ADDITION_FAILED;
-              } catch (DataFormatException e) {
-                log.debug(e.getMessage());
-                throw new RuntimeException(e);
               } catch (MemberNotFoundException e) {
                 log.debug(PERSON_NOT_FOUND);
                 return PERSON_NOT_FOUND;
+              } catch (DataFormatException | IllegalArgumentException e) {
+                log.debug(e.getMessage());
+                return e.getMessage();
               }
             })
         .filter(res -> !isBlank(res))
+        .map(String::trim)
         .collect(Collectors.toList());
   }
 
@@ -108,7 +110,7 @@ public class FIleProcessor {
   public static String processLineAsCommand(String line, FamilyTree familyTree)
       throws DataFormatException, MemberAdditionFailedException, MemberNotFoundException,
           IllegalStateException {
-    String[] commandWithParams = line.split(" ");
+    String[] commandWithParams = line.trim().split(" ");
     switch (SupportedCommand.valueOf(commandWithParams[0])) {
       case ADD_SPOUSE:
         validateParamsCardinality(commandWithParams, 2);
@@ -117,7 +119,7 @@ public class FIleProcessor {
             "Spouse {} to {} was added successfully.\n",
             commandWithParams[2],
             commandWithParams[1]);
-        return "";
+        return SPOUSE_ADDITION_SUCCEEDED;
       case ADD_CHILD:
         validateParamsCardinality(commandWithParams, 3);
         familyTree.addChild(
@@ -169,7 +171,7 @@ public class FIleProcessor {
    * @return
    */
   public static boolean isLineEmptyOrComment(String line) {
-    return (line.trim().isEmpty() || line.startsWith("#"));
+    return (line.trim().isEmpty() || line.trim().startsWith("#"));
   }
 
   /**
