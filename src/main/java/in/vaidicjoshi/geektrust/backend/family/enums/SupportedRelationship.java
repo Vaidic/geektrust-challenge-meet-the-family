@@ -1,6 +1,6 @@
 package in.vaidicjoshi.geektrust.backend.family.enums;
 
-import in.vaidicjoshi.geektrust.backend.family.model.FamilyNode;
+import in.vaidicjoshi.geektrust.backend.family.model.FamilyTree;
 import in.vaidicjoshi.geektrust.backend.family.utils.FamilyRelationshipResolver;
 import lombok.Getter;
 import lombok.NonNull;
@@ -10,7 +10,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * @author Vaidic Joshi
@@ -30,7 +30,7 @@ public enum SupportedRelationship {
   SIBLINGS("Siblings", FamilyRelationshipResolver::getSiblings);
 
   @NonNull private String name;
-  @NonNull private Function<FamilyNode, List<String>> relationResolver;
+  @NonNull private BiFunction<FamilyTree, String, List<String>> relationResolver;
   private static Map<String, SupportedRelationship> supportedRelationships = new HashMap<>();
 
   static {

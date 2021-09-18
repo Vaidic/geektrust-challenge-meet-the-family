@@ -21,11 +21,33 @@ public class FamilyNode {
   private FamilyMember femaleMember;
   private Set<FamilyMember> children = new LinkedHashSet<>();
 
+  /**
+   * Checks if the member with given name on this node is male.
+   *
+   * @param name
+   * @return
+   */
   public boolean isMale(String name) {
     return Objects.nonNull(this.maleMember) && this.maleMember.getName().equals(name);
   }
 
+  /**
+   * Checks if the member with given name on this node is female.
+   *
+   * @param name
+   * @return
+   */
   public boolean isFemale(String name) {
     return Objects.nonNull(this.femaleMember) && this.femaleMember.getName().equals(name);
+  }
+
+  /**
+   * Returns Member details from mode.
+   *
+   * @param memberName
+   * @return
+   */
+  public FamilyMember getMember(String memberName) {
+    return this.isMale(memberName) ? this.getMaleMember() : this.getFemaleMember();
   }
 }

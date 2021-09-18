@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 public class FamilyTree {
   // Cache stores member name to Family Node mappings
-  private static final Map<String, FamilyNode> familyMembers = new HashMap<>();
+  private final Map<String, FamilyNode> familyMembers = new HashMap<>();
 
   /**
    * This method returns the Family Node for the Family Member identified by his/her name.
@@ -22,7 +22,7 @@ public class FamilyTree {
    * @param name
    * @return FamilyNode
    */
-  public static FamilyNode getMember(String name) throws MemberNotFoundException {
+  public FamilyNode getMember(String name) throws MemberNotFoundException {
     return Optional.ofNullable(familyMembers.get(name))
         .orElseThrow(() -> new MemberNotFoundException("Member with name " + name + " not found."));
   }
