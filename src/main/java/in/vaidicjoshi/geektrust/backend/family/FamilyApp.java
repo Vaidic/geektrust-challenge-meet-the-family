@@ -18,7 +18,7 @@ public class FamilyApp {
         throw new InputMismatchException("Please specify the input file as argument");
       }
       FamilyTree familyTree = FamilyTreeUtils.initFamilyTree();
-      FIleProcessor.executeCommandsFromFile(args[1], familyTree);
+      FIleProcessor.executeCommandsFromFile(args[0], familyTree);
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }

@@ -43,7 +43,7 @@ public class FIleProcessor {
               });
 
     } catch (IOException e) {
-      throw new IOException("The filepath " + file + "is not reachable");
+      throw new IOException("The filepath " + file + " is not reachable");
     }
   }
 
