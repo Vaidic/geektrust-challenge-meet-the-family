@@ -8,7 +8,11 @@ import in.vaidicjoshi.geektrust.backend.family.exceptions.MemberNotFoundExceptio
 import in.vaidicjoshi.geektrust.backend.family.model.FamilyTree;
 import in.vaidicjoshi.geektrust.backend.family.service.RelationshipService;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
@@ -24,27 +28,57 @@ public class FIleProcessor {
   private static final String CHILD_ADDITION_FAILED = "CHILD_ADDITION_FAILED";
   private static final String PERSON_NOT_FOUND = "PERSON_NOT_FOUND";
 
+  /**
+   * Processes a file as input stream and executes all valid commands on it.
+   *
+   * @param inputStream
+   * @param familyTree
+   */
+  public static void executeCommandsFromFile(InputStream inputStream, FamilyTree familyTree) {
+    try (Stream<String> lines =
+        new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).lines(); ) {
+      processFile(familyTree, lines);
+    }
+  }
+
+  /**
+   * Processes a file and executes all valid commands on it.
+   *
+   * @param file
+   * @param familyTree
+   * @throws IOException
+   */
   public static void executeCommandsFromFile(String file, FamilyTree familyTree)
       throws IOException {
     try (Stream<String> lines = Files.lines(Paths.get(file))) {
-      lines
-          .filter((line) -> !isLineEmptyOrComment(line))
-          .forEach(
-              (line) -> {
-                try {
-                  processLineAsCommand(line, familyTree);
-                } catch (MemberAdditionFailedException e) {
-                  System.out.println(CHILD_ADDITION_FAILED);
-                } catch (DataFormatException e) {
-                  throw new RuntimeException(e);
-                } catch (MemberNotFoundException e) {
-                  System.out.println(PERSON_NOT_FOUND);
-                }
-              });
+      processFile(familyTree, lines);
 
     } catch (IOException e) {
       throw new IOException("The filepath " + file + " is not reachable");
     }
+  }
+
+  /**
+   * Processes all the lines with valid command of the given file and displays output.
+   *
+   * @param familyTree
+   * @param lines
+   */
+  private static void processFile(FamilyTree familyTree, Stream<String> lines) {
+    lines
+        .filter((line) -> !isLineEmptyOrComment(line))
+        .forEach(
+            (line) -> {
+              try {
+                processLineAsCommand(line, familyTree);
+              } catch (MemberAdditionFailedException e) {
+                System.out.println(CHILD_ADDITION_FAILED);
+              } catch (DataFormatException e) {
+                throw new RuntimeException(e);
+              } catch (MemberNotFoundException e) {
+                System.out.println(PERSON_NOT_FOUND);
+              }
+            });
   }
 
   /**

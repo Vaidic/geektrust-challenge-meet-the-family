@@ -6,6 +6,7 @@ import in.vaidicjoshi.geektrust.backend.family.model.FamilyNode;
 import in.vaidicjoshi.geektrust.backend.family.model.FamilyTree;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 import static in.vaidicjoshi.geektrust.backend.family.enums.Gender.FEMALE;
@@ -25,10 +26,9 @@ public class FamilyTreeUtils {
   }
 
   public static void loadFamilyFromFile(FamilyTree familyTree) throws IOException {
-    String file =
-        Objects.requireNonNull(
-                FamilyTreeUtils.class.getClassLoader().getResource("initializeFamily.txt"))
-            .getFile();
-    FIleProcessor.executeCommandsFromFile(file, familyTree);
+
+    InputStream inputStream = Objects.requireNonNull(
+            FamilyTreeUtils.class.getClassLoader().getResourceAsStream("initializeFamily.txt"));
+    FIleProcessor.executeCommandsFromFile(inputStream, familyTree);
   }
 }
